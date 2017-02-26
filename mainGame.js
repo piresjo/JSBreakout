@@ -17,10 +17,23 @@ class Brick {
 		return this.isHit;
 	}
 
+	checkIfHit(checkBall) {
+
+	}
+
+	collison(collideBall) {
+		if (!this.isHit) {
+			this.isHit = true;
+			collideBall.flip();
+		}
+		
+	}
+
 }
 
 class BlueBrick extends Brick {
-	constructor(xVal, yVal) {
+	constructor(xVal, yVal, brickProp) {
+		super(brickProp);
 		this.score = 100;
 	}
 
@@ -30,7 +43,8 @@ class BlueBrick extends Brick {
 }
 
 class RedBrick extends Brick {
-	constructor(xVal, yVal) {
+	constructor(xVal, yVal, brickProp) {
+		super(brickProp);
 		this.score = 200;
 	}
 
@@ -40,7 +54,8 @@ class RedBrick extends Brick {
 }
 
 class GreenBrick extends Brick {
-	constructor(xVal, yVal) {
+	constructor(xVal, yVal, brickProp) {
+		super(brickProp);
 		this.score = 300;
 	}
 
@@ -50,7 +65,8 @@ class GreenBrick extends Brick {
 }
 
 class YellowBrick extends Brick {
-	constructor(xVal, yVal) {
+	constructor(xVal, yVal, brickProp) {
+		super(brickProp);
 		this.score = 400;
 	}
 
@@ -60,7 +76,8 @@ class YellowBrick extends Brick {
 }
 
 class PurpleBrick extends Brick {
-	constructor(xVal, yVal) {
+	constructor(xVal, yVal, brickProp) {
+		super(brickProp);
 		this.score = 500;
 	}
 
@@ -76,11 +93,16 @@ class Ball {
 		this.xVelocity = 4;
 		this.yVelocity = 4;
 		this.isDead = false;
-		this.angle = 180;
+		this.angle = -(Math.PI);
 	}
 
 	move() {
-
+		var xValAdd = this.xVelocity * Math.cos(this.angle);
+		var yValAdd = this.yVelocity * Math.sin(this.angle);
+		xValAdd = Math.round(xValAdd);
+		yValAdd = Math.round(yValAdd);
+		this.xVal = this.xVal + xValAdd;
+		this.yVal = this.yVal + yValAdd;
 	}
 
 	showXVal() {
@@ -106,6 +128,10 @@ class Ball {
 	showAngle() {
 		return this.angle;
 	}
+
+	flip() {
+
+	}
 }
 
 class Paddle {
@@ -114,8 +140,8 @@ class Paddle {
 		this.yVal = yVal;
 	}
 
-	move() {
-
+	move(newX) {
+		this.xVal = newX;
 	}
 
 	showXVal() {
@@ -159,17 +185,21 @@ class Game {
 
 }
 
-/*module.exports = {
+module.exports = {
   brickClasses: {
-    
+    redBrick: RedBrick,
+    blueBrick: BlueBrick,
+    greenBrick: GreenBrick,
+    yellowBrick: YellowBrick,
+    purpleBrick: PurpleBrick
   },
   ballClasses: {
-    
+    ball: Ball
   },
   paddleClasses: {
-    
+    paddle: Paddle
   },
   gameClasses: {
-
+  	gameClass: Game
   }
-};*/
+};

@@ -32,8 +32,8 @@ class Brick {
 }
 
 class BlueBrick extends Brick {
-	constructor(xVal, yVal, brickProp) {
-		super(brickProp);
+	constructor(xVal, yVal) {
+		super(xVal, yVal);
 		this.score = 100;
 	}
 
@@ -43,8 +43,8 @@ class BlueBrick extends Brick {
 }
 
 class RedBrick extends Brick {
-	constructor(xVal, yVal, brickProp) {
-		super(brickProp);
+	constructor(xVal, yVal) {
+		super(xVal, yVal);
 		this.score = 200;
 	}
 
@@ -54,8 +54,8 @@ class RedBrick extends Brick {
 }
 
 class GreenBrick extends Brick {
-	constructor(xVal, yVal, brickProp) {
-		super(brickProp);
+	constructor(xVal, yVal) {
+		super(xVal, yVal);
 		this.score = 300;
 	}
 
@@ -65,8 +65,8 @@ class GreenBrick extends Brick {
 }
 
 class YellowBrick extends Brick {
-	constructor(xVal, yVal, brickProp) {
-		super(brickProp);
+	constructor(xVal, yVal) {
+		super(xVal, yVal);
 		this.score = 400;
 	}
 
@@ -76,8 +76,8 @@ class YellowBrick extends Brick {
 }
 
 class PurpleBrick extends Brick {
-	constructor(xVal, yVal, brickProp) {
-		super(brickProp);
+	constructor(xVal, yVal) {
+		super(xVal, yVal);
 		this.score = 500;
 	}
 
@@ -187,6 +187,7 @@ class Game {
 
 module.exports = {
   brickClasses: {
+  	mainBrick: Brick,
     redBrick: RedBrick,
     blueBrick: BlueBrick,
     greenBrick: GreenBrick,

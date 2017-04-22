@@ -1,3 +1,5 @@
+"use strict"
+
 class Brick {
 	constructor(xVal, yVal) {
 		this.xVal = xVal;
@@ -90,15 +92,14 @@ class Ball {
 	constructor(xVal, yVal) {
 		this.xVal = xVal;
 		this.yVal = yVal;
-		this.xVelocity = 4;
-		this.yVelocity = 4;
+		this.velocity = 4;
 		this.isDead = false;
-		this.angle = -(Math.PI);
+		this.angle = -(Math.PI / 2);
 	}
 
 	move() {
-		var xValAdd = this.xVelocity * Math.cos(this.angle);
-		var yValAdd = this.yVelocity * Math.sin(this.angle);
+		var xValAdd = this.velocity * Math.cos(this.angle);
+		var yValAdd = this.velocity * Math.sin(this.angle);
 		xValAdd = Math.round(xValAdd);
 		yValAdd = Math.round(yValAdd);
 		this.xVal = this.xVal + xValAdd;
@@ -113,13 +114,10 @@ class Ball {
 		return this.yVal;
 	}
 
-	showXVelocity() {
-		return this.xVelocity;
+	showVelocity() {
+		return this.velocity;
 	}
 
-	showYVelocity() {
-		return this.yVelocity;
-	}
 
 	showIsDead() {
 		return this.isDead;
@@ -131,6 +129,10 @@ class Ball {
 
 	flip() {
 
+	}
+
+	increaseSpeed() {
+		this.velocity = this.velocity + 2;
 	}
 }
 
@@ -182,6 +184,7 @@ class Game {
 	showExtendLife() {
 		return this.extendLife;
 	}
+
 
 }
 

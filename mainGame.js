@@ -5,6 +5,8 @@ class Brick {
 		this.xVal = xVal;
 		this.yVal = yVal;
 		this.isHit = false;
+		this.width = 50;
+		this.length = 100;
 	}
 
 	showXVal() {
@@ -19,8 +21,12 @@ class Brick {
 		return this.isHit;
 	}
 
-	checkIfHit(checkBall) {
-
+	hasCollided(collideBall) {
+		return (this.xVal + this.width >= collideBall.getX()
+				&& this.yVal + this.height >= collideBall.getY()
+				&& collideBall.getX() + collideBall.getWidth() >= this.xVal 
+				&& collideBall.getY() + collideBall.getHeight() >= this.yVal
+				&& (!(this.isHit)));
 	}
 
 	collison(collideBall) {
@@ -95,6 +101,8 @@ class Ball {
 		this.velocity = 4;
 		this.isDead = false;
 		this.angle = -(Math.PI / 2);
+		this.length = 40;
+		this.width = 40;
 	}
 
 	move() {
@@ -105,6 +113,8 @@ class Ball {
 		this.xVal = this.xVal + xValAdd;
 		this.yVal = this.yVal + yValAdd;
 	}
+
+
 
 	showXVal() {
 		return this.xVal;
@@ -140,6 +150,8 @@ class Paddle {
 	constructor(xVal, yVal) {
 		this.xVal = xVal;
 		this.yVal = yVal;
+		this.width = 50;
+		this.length = 150;
 	}
 
 	move(newX) {
@@ -152,6 +164,22 @@ class Paddle {
 
 	showYVal() {
 		return this.yVal;
+	}
+
+	hasCollided(collideBall) {
+		return (this.xVal + this.width >= collideBall.getX()
+				&& this.yVal + this.height >= collideBall.getY()
+				&& collideBall.getX() + collideBall.getWidth() >= this.xVal 
+				&& collideBall.getY() + collideBall.getHeight() >= this.yVal
+				&& (!(this.isHit)));
+	}
+
+	collison(collideBall) {
+		if (!this.isHit) {
+			this.isHit = true;
+			collideBall.flip();
+		}
+		
 	}
 
 }
@@ -190,15 +218,8 @@ class Game {
 	init(div) {
 		var self = this;
 		this.containerDiv = div;
-		self.width = window.innerWidth;
-		self.height = window.innerHeight;
-		window.addEventListener('resize', function resize(event) {
-			self.width = window.innerWidth;
-			self.height = window.innerHeight;
-			self.canvas.width = self.width;
-			self.canvas.height = self.height;
-			self.draw();
-		});
+		self.width = this.xDem;
+		self.height = this.yDem;
 
 		//	Create the canvas.
 		var canvas = document.createElement('canvas');
@@ -210,7 +231,26 @@ class Game {
 
 	begin() {
 		//	Create the bricks, set the ball and paddle
-
+		var redBrickList = [];
+		var blueBrickList = [];
+		var greenBrickList = [];
+		var yellowBrickList = [];
+		var purpleBrickList = [];
+		var ball = new Ball(this.xDem/2, 200);
+		var paddle = new Paddle(this.xDem/2, 100);
+		var interval = 50;
+		for (int i = 0; i < 8; i++) {
+			var rb = new RedBrick(50 + (interval*i), 400);
+			var bb = new BlueBrick(50 + (interval*i), 450);
+			var gb = new GreenBrick(50 + (interval*i), 500);
+			var yb = new YellowBrick(50 + (interval*i), 550);
+			var pb = new PurpleBrick(50 + (interval*i), 600);
+			redBrickList.push(rb);
+			blueBrickList.push(bb);
+			greenBrickList.push(gb);
+			yellowBrickList.push(yb);
+			purpleBrickList.push(pb);
+		}
 		var self = this;
 		//	Start the timer.
 		this.interval = setInterval(function() {
@@ -219,13 +259,14 @@ class Game {
 		}, 1000 / this.fps);
 	}
 
-	end() {
-		clearInterval(this.interval);
-	}
-
 	update() {
 		var dt = 1 / this.fps;
 		// Update the states of the blocks, the ball, and the object
+		$('#gameContainer').mouseover(function(e) {
+			var xMouseVal = e.pageX;
+			paddle.move(xMouseVal);
+		});
+		ball.move();
 	}
 
 	draw() {
@@ -237,15 +278,10 @@ class Game {
 		context.fillRect(0, 0, this.width, this.height);
 
 		//	Draw  the elements.
-		context.fillStyle = '#ffffff';
-		for(var i = 0; i < this.stars.length; i++) {
-			var star = this.stars[i];
-			context.fillRect(star.x, star.y, star.size, star.size);
-		}
 	}
-
-
 }
+
+
 
 module.exports = {
   brickClasses: {

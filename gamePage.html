@@ -1,0 +1,54 @@
+<!DOCTYPE HTML>
+<html lang="eng-US">
+  <head>
+    <meta charset="UTF-8">
+    <title> JQuery Breakout </title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+    <script src="mainGame.js"></script>
+    <link type="text/css" rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css?family=Alike+Angular"
+      rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Space+Mono"
+      rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Asul" rel="stylesheet">
+  </head>
+
+  <body>
+      <div id="header">
+        <h1 id="name">JQuery Breakout</h1>
+      </div>
+
+      <div id="links">
+        <ul id="linkTable">
+          <li id="projectsPage">
+            <a href="projects.html">Projects</a>
+          </li>
+          <li id="writingsPage">
+            <a href="writings.html">Writings</a>
+          </li>
+          <li id="github">
+            <a href="http://github.com/piresjo">Code</a>
+          </li>
+          <li id="linkedin">
+            <a href="https://www.linkedin.com/in/joe-pires-8b039b106">LinkedIn</a>
+          </li>
+          <li id="resume">
+            <a href="ProfessionalResume.pdf">Resume</a>
+          </li>
+          <li id="contact">
+            <a href="mailto:piresjo@seas.upenn.edu">Contact</a>
+          </li>
+        </ul>
+      </div>
+      <div id="gameContainer"></div>
+  </body>
+
+
+  <script>
+    //  Get the container and turn it into a starfield.
+    var container = document.getElementById('gameContainer');
+    var game = new Game(5, 400, 800);
+    game.init(container);
+    game.begin();
+  </script>
+</html>

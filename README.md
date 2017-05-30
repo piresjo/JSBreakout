@@ -1,2 +1,2 @@
 # JSBreakout
-Simple Breakout Game To Re-teach Me JavaScript
+Simple Breakout Game In JavaScript

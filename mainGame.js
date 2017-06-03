@@ -43,6 +43,8 @@ class BlueBrick extends Brick {
 	constructor(xVal, yVal) {
 		super(xVal, yVal);
 		this.score = 100;
+		this.image = new Image();
+		this.image.src = 'sprites/blueBrick.jpg';
 	}
 
 	showScore() {
@@ -54,6 +56,8 @@ class RedBrick extends Brick {
 	constructor(xVal, yVal) {
 		super(xVal, yVal);
 		this.score = 200;
+		this.image = new Image();
+		this.image.src = 'sprites/redBrick.jpg';
 	}
 
 	showScore() {
@@ -65,6 +69,8 @@ class GreenBrick extends Brick {
 	constructor(xVal, yVal) {
 		super(xVal, yVal);
 		this.score = 300;
+		this.image = new Image();
+		this.image.src = 'sprites/greenBrick.jpg';
 	}
 
 	showScore() {
@@ -76,6 +82,8 @@ class YellowBrick extends Brick {
 	constructor(xVal, yVal) {
 		super(xVal, yVal);
 		this.score = 400;
+		this.image = new Image();
+		this.image.src = 'sprites/yellowBrick.jpg';
 	}
 
 	showScore() {
@@ -87,6 +95,8 @@ class PurpleBrick extends Brick {
 	constructor(xVal, yVal) {
 		super(xVal, yVal);
 		this.score = 500;
+		this.image = new Image();
+		this.image.src = 'sprites/purpleBrick.jpg';
 	}
 
 	showScore() {
@@ -100,9 +110,11 @@ class Ball {
 		this.yVal = yVal;
 		this.velocity = 4;
 		this.isDead = false;
-		this.angle = -(Math.PI / 2);
+		this.angle = -(Math.PI / 4);
 		this.length = 40;
 		this.width = 40;
+		this.image = new Image();
+		this.image.src = 'sprites/ball.jpg';
 	}
 
 	move() {
@@ -138,7 +150,12 @@ class Ball {
 	}
 
 	flip() {
-
+		if (this.angle < 0) {
+			this.angle = this.angle + (Math.Pi / 2);
+		} else {
+			this.angle = this.angle - (Math.PI / 2);
+		}
+		
 	}
 
 	increaseSpeed() {
@@ -152,6 +169,8 @@ class Paddle {
 		this.yVal = yVal;
 		this.width = 50;
 		this.length = 150;
+		this.image = new Image();
+		this.image.src = 'sprites/paddle.jpg';
 	}
 
 	move(newX) {
@@ -193,6 +212,13 @@ class Game {
 		this.extendLife = 10000;
 		this.fps = 30;
 		this.canvas = null;
+		this.redBrickList = [];
+		this.blueBrickList = [];
+		this.greenBrickList = [];
+		this.yellowBrickList = [];
+		this.purpleBrickList = [];
+		this.ball = null;
+		this.paddle = null;
 	}
 
 	showNumLines() {
@@ -224,6 +250,7 @@ class Game {
 		//	Create the canvas.
 		var canvas = document.createElement('canvas');
 		div.appendChild(canvas);
+		console.log("HELLO");
 		this.canvas = canvas;
 		this.canvas.width = this.width;
 		this.canvas.height = this.height;
@@ -231,27 +258,23 @@ class Game {
 
 	begin() {
 		//	Create the bricks, set the ball and paddle
-		var redBrickList = [];
-		var blueBrickList = [];
-		var greenBrickList = [];
-		var yellowBrickList = [];
-		var purpleBrickList = [];
-		var ball = new Ball(this.xDem/2, 200);
-		var paddle = new Paddle(this.xDem/2, 100);
+		this.ball = new Ball(this.xDem/2, 200);
+		this.paddle = new Paddle(this.xDem/2, 100);
 		var interval = 50;
-		for (int i = 0; i < 8; i++) {
+		for (var i = 0; i < 8; i++) {
 			var rb = new RedBrick(50 + (interval*i), 400);
 			var bb = new BlueBrick(50 + (interval*i), 450);
 			var gb = new GreenBrick(50 + (interval*i), 500);
 			var yb = new YellowBrick(50 + (interval*i), 550);
 			var pb = new PurpleBrick(50 + (interval*i), 600);
-			redBrickList.push(rb);
-			blueBrickList.push(bb);
-			greenBrickList.push(gb);
-			yellowBrickList.push(yb);
-			purpleBrickList.push(pb);
+			this.redBrickList.push(rb);
+			this.blueBrickList.push(bb);
+			this.greenBrickList.push(gb);
+			this.yellowBrickList.push(yb);
+			this.purpleBrickList.push(pb);
 		}
 		var self = this;
+		self.draw();
 		//	Start the timer.
 		this.interval = setInterval(function() {
 			self.update();
@@ -264,9 +287,9 @@ class Game {
 		// Update the states of the blocks, the ball, and the object
 		$('#gameContainer').mouseover(function(e) {
 			var xMouseVal = e.pageX;
-			paddle.move(xMouseVal);
+			this.paddle.move(xMouseVal);
 		});
-		ball.move();
+		this.ball.move();
 	}
 
 	draw() {
@@ -278,12 +301,40 @@ class Game {
 		context.fillRect(0, 0, this.width, this.height);
 
 		//	Draw  the elements.
+		// Start with the bricks
+		for (var i = 0; i < 8; i++) {
+			if (!(this.redBrickList[i].showIsHit())) {
+				context.drawImage(this.redBrickList[i].image, this.redBrickList[i].showXVal(),
+					this.redBrickList[i].showYVal());
+			}
+			if (!(this.blueBrickList[i].showIsHit())) {
+				context.drawImage(this.blueBrickList[i].image, this.blueBrickList[i].showXVal(),
+					this.blueBrickList[i].showYVal());
+			}
+			if (!(this.greenBrickList[i].showIsHit())) {
+				context.drawImage(this.greenBrickList[i].image, this.greenBrickList[i].showXVal(),
+					this.greenBrickList[i].showYVal());
+			}
+			if (!(this.yellowBrickList[i].showIsHit())) {
+				context.drawImage(this.yellowBrickList[i].image, this.yellowBrickList[i].showXVal(),
+					this.yellowBrickList[i].showYVal());
+			}
+			if (!(this.purpleBrickList[i].showIsHit())) {
+				context.drawImage(this.purpleBrickList[i].image, this.purpleBrickList[i].showXVal(),
+					this.purpleBrickList[i].showYVal());
+			}
+		}
+
+		// now the ball
+		context.drawImage(this.ball.image, this.ball.showXVal(), this.ball.showYVal());
+		// now the paddle
+		context.drawImage(this.paddle.image, this.paddle.showXVal(), this.paddle.showYVal());
 	}
 }
 
 
 
-module.exports = {
+/*module.exports = {
   brickClasses: {
   	mainBrick: Brick,
     redBrick: RedBrick,
@@ -301,4 +352,4 @@ module.exports = {
   gameClasses: {
   	gameClass: Game
   }
-};
+};*/

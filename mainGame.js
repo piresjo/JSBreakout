@@ -22,10 +22,15 @@ class Brick {
 	}
 
 	hasCollided(collideBall) {
-		return (this.xVal + this.width >= collideBall.getX()
-				&& this.yVal + this.height >= collideBall.getY()
-				&& collideBall.getX() + collideBall.getWidth() >= this.xVal 
-				&& collideBall.getY() + collideBall.getHeight() >= this.yVal
+		console.log(this.xVal + this.width >= collideBall.showXVal());
+		console.log(this.yVal + this.height >= collideBall.showYVal());
+		console.log(collideBall.showXVal() + collideBall.width >= this.xVal);
+		console.log(collideBall.showYVal() + collideBall.height >= this.yVal);
+		console.log(!(this.isHit));
+		return (this.xVal + this.width >= collideBall.showXVal()
+				&& this.yVal + this.height >= collideBall.showYVal()
+				&& collideBall.showXVal() + collideBall.width >= this.xVal 
+				&& collideBall.showYVal() + collideBall.height >= this.yVal
 				&& (!(this.isHit)));
 	}
 
@@ -43,8 +48,8 @@ class BlueBrick extends Brick {
 	constructor(xVal, yVal) {
 		super(xVal, yVal);
 		this.score = 100;
-		this.image = new Image();
-		this.image.src = 'sprites/blueBrick.jpg';
+		//this.image = new Image();
+		//this.image.src = 'sprites/blueBrick.jpg';
 	}
 
 	showScore() {
@@ -56,8 +61,8 @@ class RedBrick extends Brick {
 	constructor(xVal, yVal) {
 		super(xVal, yVal);
 		this.score = 200;
-		this.image = new Image();
-		this.image.src = 'sprites/redBrick.jpg';
+		//this.image = new Image();
+		//this.image.src = 'sprites/redBrick.jpg';
 	}
 
 	showScore() {
@@ -69,8 +74,8 @@ class GreenBrick extends Brick {
 	constructor(xVal, yVal) {
 		super(xVal, yVal);
 		this.score = 300;
-		this.image = new Image();
-		this.image.src = 'sprites/greenBrick.jpg';
+		//this.image = new Image();
+		//this.image.src = 'sprites/greenBrick.jpg';
 	}
 
 	showScore() {
@@ -82,8 +87,8 @@ class YellowBrick extends Brick {
 	constructor(xVal, yVal) {
 		super(xVal, yVal);
 		this.score = 400;
-		this.image = new Image();
-		this.image.src = 'sprites/yellowBrick.jpg';
+		//this.image = new Image();
+		//this.image.src = 'sprites/yellowBrick.jpg';
 	}
 
 	showScore() {
@@ -95,8 +100,8 @@ class PurpleBrick extends Brick {
 	constructor(xVal, yVal) {
 		super(xVal, yVal);
 		this.score = 500;
-		this.image = new Image();
-		this.image.src = 'sprites/purpleBrick.jpg';
+		//this.image = new Image();
+		//this.image.src = 'sprites/purpleBrick.jpg';
 	}
 
 	showScore() {
@@ -113,8 +118,8 @@ class Ball {
 		this.angle = -(Math.PI / 4);
 		this.length = 40;
 		this.width = 40;
-		this.image = new Image();
-		this.image.src = 'sprites/ball.jpg';
+		//this.image = new Image();
+		//this.image.src = 'sprites/ball.jpg';
 	}
 
 	move() {
@@ -169,8 +174,8 @@ class Paddle {
 		this.yVal = yVal;
 		this.width = 50;
 		this.length = 150;
-		this.image = new Image();
-		this.image.src = 'sprites/paddle.jpg';
+		//this.image = new Image();
+		//this.image.src = 'sprites/paddle.jpg';
 	}
 
 	move(newX) {
@@ -186,11 +191,14 @@ class Paddle {
 	}
 
 	hasCollided(collideBall) {
-		return (this.xVal + this.width >= collideBall.getX()
-				&& this.yVal + this.height >= collideBall.getY()
-				&& collideBall.getX() + collideBall.getWidth() >= this.xVal 
-				&& collideBall.getY() + collideBall.getHeight() >= this.yVal
-				&& (!(this.isHit)));
+		console.log(this.xVal + this.width >= collideBall.showXVal());
+		console.log(this.yVal + this.height >= collideBall.showYVal());
+		console.log(collideBall.showXVal() + collideBall.width >= this.xVal);
+		console.log(collideBall.showYVal() + collideBall.height >= this.yVal);
+		return (this.xVal + this.width >= collideBall.showXVal()
+				&& this.yVal + this.height >= collideBall.showYVal()
+				&& collideBall.showXVal() + collideBall.width >= this.xVal 
+				&& collideBall.showYVal() + collideBall.height >= this.yVal);
 	}
 
 	collison(collideBall) {
@@ -334,7 +342,7 @@ class Game {
 
 
 
-/*module.exports = {
+module.exports = {
   brickClasses: {
   	mainBrick: Brick,
     redBrick: RedBrick,
@@ -352,4 +360,4 @@ class Game {
   gameClasses: {
   	gameClass: Game
   }
-};*/
+};

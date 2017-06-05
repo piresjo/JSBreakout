@@ -17,22 +17,30 @@ class Brick {
 		return this.yVal;
 	}
 
+	showLength() {
+		return this.length;
+	}
+
+	showWidth() {
+		return this.width;
+	}
+
 	showIsHit() {
 		return this.isHit;
 	}
 
 	hasCollided(collideBall) {
 		return (collideBall.showXVal() >= this.showXVal() &&
-				collideBall.showXVal() < this.showXVal() + this.length &&
+				collideBall.showXVal() < this.showXVal() + this.showLength() &&
 				collideBall.showYVal() >= this.showYVal() &&
-				collideBall.showYVal() < this.showYVal() + this.width
-				&& (!(this.isHit)));
+				collideBall.showYVal() < this.showYVal() + this.showWidth()
+				&& (!(this.showIsHit())));
 	}
 
 	collison(collideBall) {
-		if (!this.isHit) {
+		if (!(this.showIsHit())) {
 			this.isHit = true;
-			collideBall.flip();
+			collideBall.flip('v');
 		}
 		
 	}
@@ -43,8 +51,8 @@ class BlueBrick extends Brick {
 	constructor(xVal, yVal) {
 		super(xVal, yVal);
 		this.score = 100;
-		//this.image = new Image();
-		//this.image.src = 'sprites/blueBrick.jpg';
+		this.image = new Image();
+		this.image.src = 'sprites/blueBrick.jpg';
 	}
 
 	showScore() {
@@ -56,8 +64,8 @@ class RedBrick extends Brick {
 	constructor(xVal, yVal) {
 		super(xVal, yVal);
 		this.score = 200;
-		//this.image = new Image();
-		//this.image.src = 'sprites/redBrick.jpg';
+		this.image = new Image();
+		this.image.src = 'sprites/redBrick.jpg';
 	}
 
 	showScore() {
@@ -69,8 +77,8 @@ class GreenBrick extends Brick {
 	constructor(xVal, yVal) {
 		super(xVal, yVal);
 		this.score = 300;
-		//this.image = new Image();
-		//this.image.src = 'sprites/greenBrick.jpg';
+		this.image = new Image();
+		this.image.src = 'sprites/greenBrick.jpg';
 	}
 
 	showScore() {
@@ -82,8 +90,8 @@ class YellowBrick extends Brick {
 	constructor(xVal, yVal) {
 		super(xVal, yVal);
 		this.score = 400;
-		//this.image = new Image();
-		//this.image.src = 'sprites/yellowBrick.jpg';
+		this.image = new Image();
+		this.image.src = 'sprites/yellowBrick.jpg';
 	}
 
 	showScore() {
@@ -95,8 +103,8 @@ class PurpleBrick extends Brick {
 	constructor(xVal, yVal) {
 		super(xVal, yVal);
 		this.score = 500;
-		//this.image = new Image();
-		//this.image.src = 'sprites/purpleBrick.jpg';
+		this.image = new Image();
+		this.image.src = 'sprites/purpleBrick.jpg';
 	}
 
 	showScore() {
@@ -108,22 +116,18 @@ class Ball {
 	constructor(xVal, yVal) {
 		this.xVal = xVal;
 		this.yVal = yVal;
-		this.velocity = 4;
+		this.xVelocity = 2;
+		this.yVelocity = 2;
 		this.isDead = false;
-		this.angle = -(Math.PI / 4);
 		this.length = 40;
 		this.width = 40;
-		//this.image = new Image();
-		//this.image.src = 'sprites/ball.jpg';
+		this.image = new Image();
+		this.image.src = 'sprites/ball.jpg';
 	}
 
 	move() {
-		var xValAdd = this.velocity * Math.cos(this.angle);
-		var yValAdd = this.velocity * Math.sin(this.angle);
-		xValAdd = Math.round(xValAdd);
-		yValAdd = Math.round(yValAdd);
-		this.xVal = this.xVal + xValAdd;
-		this.yVal = this.yVal + yValAdd;
+		this.xVal = this.xVal + this.xVelocity;
+		this.yVal = this.yVal + this.yVelocity;
 	}
 
 
@@ -136,30 +140,57 @@ class Ball {
 		return this.yVal;
 	}
 
-	showVelocity() {
-		return this.velocity;
+	showLength() {
+		return this.length;
 	}
 
+	showWidth() {
+		return this.width;
+	}
+
+	showXVelocity() {
+		return this.xVelocity;
+	}
+
+	showYVelocity() {
+		return this.yVelocity;
+	}
 
 	showIsDead() {
 		return this.isDead;
 	}
 
-	showAngle() {
-		return this.angle;
-	}
 
-	flip() {
-		if (this.angle < 0) {
-			this.angle = this.angle + (Math.Pi / 2);
+	flip(flipChar) {
+		if (flipChar === 'v') {
+			this.yVelocity = -this.yVelocity;
+		} else if (flipChar === 'h') {
+			this.xVelocity = -this.xVelocity;
 		} else {
-			this.angle = this.angle - (Math.PI / 2);
+			throw error("BAD FLIP CHAR STRING");
 		}
-		
 	}
 
 	increaseSpeed() {
-		this.velocity = this.velocity + 2;
+		this.xVelocity = this.xVelocity + 2;
+		this.yVelocity = this.yVelocity + 2;
+	}
+
+	atTopWall(canvasY) {
+		return (this.showYVal() > canvasY);
+	}
+
+	atSideWalls(canvasX) {
+		return (this.showXVal() > canvasX || this.showXVal() < this.showWidth());
+	}
+
+	isBallDead() {
+		return (this.showYVal() < 0);
+	}
+
+	place(newX, newY) {
+		this.xVal = newX;
+		this.yVal = newY;
 	}
 }
 
@@ -169,8 +200,8 @@ class Paddle {
 		this.yVal = yVal;
 		this.width = 50;
 		this.length = 150;
-		//this.image = new Image();
-		//this.image.src = 'sprites/paddle.jpg';
+		this.image = new Image();
+		this.image.src = 'sprites/paddle.jpg';
 	}
 
 	move(newX) {
@@ -185,20 +216,30 @@ class Paddle {
 		return this.yVal;
 	}
 
+	showLength() {
+		return this.length;
+	}
+
+	showWidth() {
+		return this.width;
+	}
+
 	hasCollided(collideBall) {
 		return (collideBall.showXVal() >= this.showXVal() &&
-				collideBall.showXVal() < this.showXVal() + this.length &&
+				collideBall.showXVal() < this.showXVal() + this.showLength() &&
 				collideBall.showYVal() >= this.showYVal() &&
-				collideBall.showYVal() < this.showYVal() + this.width);
+				collideBall.showYVal() < this.showYVal() + this.showWidth());
 	}
 
 	collison(collideBall) {
 		if (!this.isHit) {
 			this.isHit = true;
-			collideBall.flip();
+			collideBall.flip('v');
 		}
 		
 	}
+
+
 
 }
 
@@ -218,6 +259,7 @@ class Game {
 		this.purpleBrickList = [];
 		this.ball = null;
 		this.paddle = null;
+		this.numElements = 40;
 	}
 
 	showNumLines() {
@@ -249,10 +291,54 @@ class Game {
 		//	Create the canvas.
 		var canvas = document.createElement('canvas');
 		div.appendChild(canvas);
-		console.log("HELLO");
 		this.canvas = canvas;
 		this.canvas.width = this.width;
 		this.canvas.height = this.height;
+	}
+
+	gameOver() {
+		alert("GAME OVER");
+	}
+
+	newLife() {
+		this.numLives += 1;
+	}
+
+	restart() {
+		this.ball.place(this.xDem/2, 200);
+		this.paddle.move(this.xDem/2);
+		if (this.numLives > 0) {
+			this.numLives -= 1;
+		} else {
+			this.gameOver();
+		}
+		
+	}
+
+	newLevel() {
+		this.ball.place(this.xDem/2, 200);
+		this.paddle.move(this.xDem/2);
+		var interval = 50;
+		this.redBrickList = [];
+		this.blueBrickList = [];
+		this.greenBrickList = [];
+		this.yellowBrickList = [];
+		this.purpleBrickList = [];
+		for (var i = 0; i < 8; i++) {
+			var rb = new RedBrick(50 + (interval*i), 400);
+			var bb = new BlueBrick(50 + (interval*i), 450);
+			var gb = new GreenBrick(50 + (interval*i), 500);
+			var yb = new YellowBrick(50 + (interval*i), 550);
+			var pb = new PurpleBrick(50 + (interval*i), 600);
+			this.redBrickList.push(rb);
+			this.blueBrickList.push(bb);
+			this.greenBrickList.push(gb);
+			this.yellowBrickList.push(yb);
+			this.purpleBrickList.push(pb);
+		}
+		var self = this;
+		self.draw();
+		this.numElements = 40;
 	}
 
 	begin() {
@@ -284,26 +370,50 @@ class Game {
 	update() {
 		var dt = 1 / this.fps;
 		// Update the states of the blocks, the ball, and the paddle
+		if (this.numElements === 0) {
+			this.newLevel();
+		}
+		if (this.ball.isBallDead()) {
+			this.restart();
+		}
+		if (this.score === 20000) {
+			this.newLife();
+		}
 		$('#gameContainer').mouseover(function(e) {
 			var xMouseVal = e.pageX;
 			this.paddle.move(xMouseVal);
 		});
+		
 		this.ball.move();
+		if (this.ball.atTopWall(this.yDem)) {
+			this.ball.flip('v');
+		}
+		if (this.ball.atSideWalls(this.xDem)) {
+			this.ball.flip('h');
+		}
+		if (this.paddle.hasCollided(this.ball)) {
+			this.paddle.collision(this.ball);
+		}
 		for (var i = 0; i < 8; i++) {
 			if (!(this.redBrickList[i].showIsHit) && this.redBrickList[i].hasCollided(this.ball)) {
 				this.redBrickList[i].collison(this.ball);
+				this.numElements -= 1;
 			}
 			if (!(this.blueBrickList[i].showIsHit) && this.blueBrickList[i].hasCollided(this.ball)) {
 				this.blueBrickList[i].collison(this.ball);
+				this.numElements -= 1;
 			}
 			if (!(this.greenBrickList[i].showIsHit) && this.greenBrickList[i].hasCollided(this.ball)) {
 				this.greenBrickList[i].collison(this.ball);
+				this.numElements -= 1;
 			}
 			if (!(this.yellowBrickList[i].showIsHit) && this.yellowBrickList[i].hasCollided(this.ball)) {
 				this.yellowBrickList[i].collison(this.ball);
+				this.numElements -= 1;
 			}
 			if (!(this.purpleBrickList[i].showIsHit) && this.purpleBrickList[i].hasCollided(this.ball)) {
 				this.purpleBrickList[i].collison(this.ball);
+				this.numElements -= 1;
 			}
 		}
 	}
@@ -312,7 +422,8 @@ class Game {
 		//	Get the drawing context.
 		var context = this.canvas.getContext("2d");
 
-		//	Draw the background.
+		// Clear Stuff and Draw the Background.
+		context.clearRect(0, 0, this.canvas.width, this.canvas.height);
 	 	context.fillStyle = '#e3e3e3';
 		context.fillRect(0, 0, this.width, this.height);
 

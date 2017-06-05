@@ -88,8 +88,8 @@ console.log("");
 
 // Test collision between the ball and brick
 console.log("Ball-Brick Collisions");
-let rbTestCollide = new redBrickClass(100, 100);
-let ballTestCollide = new ballClass(100, 100);
+let rbTestCollide = new redBrickClass(20, 20);
+let ballTestCollide = new ballClass(20, 20);
 console.log(rbTestCollide.hasCollided(ballTestCollide));
 console.log("");
 

@@ -22,15 +22,10 @@ class Brick {
 	}
 
 	hasCollided(collideBall) {
-		console.log(this.xVal + this.width >= collideBall.showXVal());
-		console.log(this.yVal + this.height >= collideBall.showYVal());
-		console.log(collideBall.showXVal() + collideBall.width >= this.xVal);
-		console.log(collideBall.showYVal() + collideBall.height >= this.yVal);
-		console.log(!(this.isHit));
-		return (this.xVal + this.width >= collideBall.showXVal()
-				&& this.yVal + this.height >= collideBall.showYVal()
-				&& collideBall.showXVal() + collideBall.width >= this.xVal 
-				&& collideBall.showYVal() + collideBall.height >= this.yVal
+		return (collideBall.showXVal() >= this.showXVal() &&
+				collideBall.showXVal() < this.showXVal() + this.length &&
+				collideBall.showYVal() >= this.showYVal() &&
+				collideBall.showYVal() < this.showYVal() + this.width
 				&& (!(this.isHit)));
 	}
 
@@ -191,14 +186,10 @@ class Paddle {
 	}
 
 	hasCollided(collideBall) {
-		console.log(this.xVal + this.width >= collideBall.showXVal());
-		console.log(this.yVal + this.height >= collideBall.showYVal());
-		console.log(collideBall.showXVal() + collideBall.width >= this.xVal);
-		console.log(collideBall.showYVal() + collideBall.height >= this.yVal);
-		return (this.xVal + this.width >= collideBall.showXVal()
-				&& this.yVal + this.height >= collideBall.showYVal()
-				&& collideBall.showXVal() + collideBall.width >= this.xVal 
-				&& collideBall.showYVal() + collideBall.height >= this.yVal);
+		return (collideBall.showXVal() >= this.showXVal() &&
+				collideBall.showXVal() < this.showXVal() + this.length &&
+				collideBall.showYVal() >= this.showYVal() &&
+				collideBall.showYVal() < this.showYVal() + this.width);
 	}
 
 	collison(collideBall) {
@@ -292,12 +283,29 @@ class Game {
 
 	update() {
 		var dt = 1 / this.fps;
-		// Update the states of the blocks, the ball, and the object
+		// Update the states of the blocks, the ball, and the paddle
 		$('#gameContainer').mouseover(function(e) {
 			var xMouseVal = e.pageX;
 			this.paddle.move(xMouseVal);
 		});
 		this.ball.move();
+		for (var i = 0; i < 8; i++) {
+			if (!(this.redBrickList[i].showIsHit) && this.redBrickList[i].hasCollided(this.ball)) {
+				this.redBrickList[i].collison(this.ball);
+			}
+			if (!(this.blueBrickList[i].showIsHit) && this.blueBrickList[i].hasCollided(this.ball)) {
+				this.blueBrickList[i].collison(this.ball);
+			}
+			if (!(this.greenBrickList[i].showIsHit) && this.greenBrickList[i].hasCollided(this.ball)) {
+				this.greenBrickList[i].collison(this.ball);
+			}
+			if (!(this.yellowBrickList[i].showIsHit) && this.yellowBrickList[i].hasCollided(this.ball)) {
+				this.yellowBrickList[i].collison(this.ball);
+			}
+			if (!(this.purpleBrickList[i].showIsHit) && this.purpleBrickList[i].hasCollided(this.ball)) {
+				this.purpleBrickList[i].collison(this.ball);
+			}
+		}
 	}
 
 	draw() {
@@ -341,23 +349,25 @@ class Game {
 }
 
 
-
+/* Export module:  
+ * I'll be using this for my test cases  
+ */ 
 module.exports = {
-  brickClasses: {
-  	mainBrick: Brick,
-    redBrick: RedBrick,
-    blueBrick: BlueBrick,
-    greenBrick: GreenBrick,
-    yellowBrick: YellowBrick,
-    purpleBrick: PurpleBrick
-  },
-  ballClasses: {
-    ball: Ball
-  },
-  paddleClasses: {
-    paddle: Paddle
-  },
-  gameClasses: {
-  	gameClass: Game
-  }
+	brickClasses: {     
+		mainBrick: Brick,     
+		redBrick: RedBrick,     
+		blueBrick: BlueBrick,     
+		greenBrick: GreenBrick,     
+		yellowBrick: YellowBrick,
+		purpleBrick: PurpleBrick   
+	},   
+	ballClasses: {     
+		ball: Ball   
+	},
+	paddleClasses: {     
+		paddle: Paddle   
+	},   
+	gameClasses: {     
+		gameClass: Game
+	} 
 };

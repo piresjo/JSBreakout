@@ -104,4 +104,5 @@ console.log("Ball-Paddle Collisions");
 let paddleTestCollide = new paddleClass(100, 100);
 let ballTestCollide2 = new ballClass(100, 100);
 console.log(paddleTestCollide.hasCollided(ballTestCollide2));
+console.log(ballTestCollide.showYVelocity() === -2);
 console.log("");

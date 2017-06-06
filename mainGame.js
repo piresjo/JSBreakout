@@ -1,4 +1,4 @@
-"use strict"
+"use strict";
 
 class Brick {
 	constructor(xVal, yVal) {
@@ -30,19 +30,14 @@ class Brick {
 	}
 
 	hasCollided(collideBall) {
-		return (collideBall.showXVal() >= this.showXVal() &&
-				collideBall.showXVal() < this.showXVal() + this.showLength() &&
-				collideBall.showYVal() >= this.showYVal() &&
-				collideBall.showYVal() < this.showYVal() + this.showWidth()
-				&& (!(this.showIsHit())));
+		return collideBall.showXVal() >= this.showXVal() && collideBall.showXVal() < this.showXVal() + this.showLength() && collideBall.showYVal() >= this.showYVal() && collideBall.showYVal() < this.showYVal() + this.showWidth() && !this.showIsHit();
 	}
 
-	collison(collideBall) {
-		if (!(this.showIsHit())) {
+	collision(collideBall) {
+		if (!this.showIsHit()) {
 			this.isHit = true;
 			collideBall.flip('v');
 		}
-		
 	}
 
 }
@@ -51,8 +46,8 @@ class BlueBrick extends Brick {
 	constructor(xVal, yVal) {
 		super(xVal, yVal);
 		this.score = 100;
-		this.image = new Image();
-		this.image.src = 'sprites/blueBrick.jpg';
+		//this.image = new Image();
+		//this.image.src = 'sprites/blueBrick.jpg';
 	}
 
 	showScore() {
@@ -64,8 +59,8 @@ class RedBrick extends Brick {
 	constructor(xVal, yVal) {
 		super(xVal, yVal);
 		this.score = 200;
-		this.image = new Image();
-		this.image.src = 'sprites/redBrick.jpg';
+		//this.image = new Image();
+		//this.image.src = 'sprites/redBrick.jpg';
 	}
 
 	showScore() {
@@ -77,8 +72,8 @@ class GreenBrick extends Brick {
 	constructor(xVal, yVal) {
 		super(xVal, yVal);
 		this.score = 300;
-		this.image = new Image();
-		this.image.src = 'sprites/greenBrick.jpg';
+		//this.image = new Image();
+		//this.image.src = 'sprites/greenBrick.jpg';
 	}
 
 	showScore() {
@@ -90,8 +85,8 @@ class YellowBrick extends Brick {
 	constructor(xVal, yVal) {
 		super(xVal, yVal);
 		this.score = 400;
-		this.image = new Image();
-		this.image.src = 'sprites/yellowBrick.jpg';
+		//this.image = new Image();
+		//this.image.src = 'sprites/yellowBrick.jpg';
 	}
 
 	showScore() {
@@ -103,8 +98,8 @@ class PurpleBrick extends Brick {
 	constructor(xVal, yVal) {
 		super(xVal, yVal);
 		this.score = 500;
-		this.image = new Image();
-		this.image.src = 'sprites/purpleBrick.jpg';
+		//this.image = new Image();
+		//this.image.src = 'sprites/purpleBrick.jpg';
 	}
 
 	showScore() {
@@ -121,16 +116,14 @@ class Ball {
 		this.isDead = false;
 		this.length = 40;
 		this.width = 40;
-		this.image = new Image();
-		this.image.src = 'sprites/ball.jpg';
+		//this.image = new Image();
+		//this.image.src = 'sprites/ball.jpg';
 	}
 
 	move() {
 		this.xVal = this.xVal + this.xVelocity;
 		this.yVal = this.yVal + this.yVelocity;
 	}
-
-
 
 	showXVal() {
 		return this.xVal;
@@ -160,7 +153,6 @@ class Ball {
 		return this.isDead;
 	}
 
-
 	flip(flipChar) {
 		if (flipChar === 'v') {
 			this.yVelocity = -this.yVelocity;
@@ -177,15 +169,15 @@ class Ball {
 	}
 
 	atTopWall(canvasY) {
-		return (this.showYVal() > canvasY);
+		return this.showYVal() > canvasY;
 	}
 
 	atSideWalls(canvasX) {
-		return (this.showXVal() > canvasX || this.showXVal() < this.showWidth());
+		return this.showXVal() > canvasX || this.showXVal() < this.showWidth();
 	}
 
 	isBallDead() {
-		return (this.showYVal() < 0);
+		return this.showYVal() < 0;
 	}
 
 	place(newX, newY) {
@@ -200,8 +192,8 @@ class Paddle {
 		this.yVal = yVal;
 		this.width = 50;
 		this.length = 150;
-		this.image = new Image();
-		this.image.src = 'sprites/paddle.jpg';
+		//this.image = new Image();
+		//this.image.src = 'sprites/paddle.jpg';
 	}
 
 	move(newX) {
@@ -225,21 +217,15 @@ class Paddle {
 	}
 
 	hasCollided(collideBall) {
-		return (collideBall.showXVal() >= this.showXVal() &&
-				collideBall.showXVal() < this.showXVal() + this.showLength() &&
-				collideBall.showYVal() >= this.showYVal() &&
-				collideBall.showYVal() < this.showYVal() + this.showWidth());
+		return collideBall.showXVal() >= this.showXVal() && collideBall.showXVal() < this.showXVal() + this.showLength() && collideBall.showYVal() >= this.showYVal() && collideBall.showYVal() < this.showYVal() + this.showWidth();
 	}
 
-	collison(collideBall) {
+	collision(collideBall) {
 		if (!this.isHit) {
 			this.isHit = true;
 			collideBall.flip('v');
 		}
-		
 	}
-
-
 
 }
 
@@ -305,19 +291,18 @@ class Game {
 	}
 
 	restart() {
-		this.ball.place(this.xDem/2, 200);
-		this.paddle.move(this.xDem/2);
+		this.ball.place(this.xDem / 2, 200);
+		this.paddle.move(this.xDem / 2);
 		if (this.numLives > 0) {
 			this.numLives -= 1;
 		} else {
 			this.gameOver();
 		}
-		
 	}
 
 	newLevel() {
-		this.ball.place(this.xDem/2, 200);
-		this.paddle.move(this.xDem/2);
+		this.ball.place(this.xDem / 2, 200);
+		this.paddle.move(this.xDem / 2);
 		var interval = 50;
 		this.redBrickList = [];
 		this.blueBrickList = [];
@@ -325,11 +310,11 @@ class Game {
 		this.yellowBrickList = [];
 		this.purpleBrickList = [];
 		for (var i = 0; i < 8; i++) {
-			var rb = new RedBrick(50 + (interval*i), 400);
-			var bb = new BlueBrick(50 + (interval*i), 450);
-			var gb = new GreenBrick(50 + (interval*i), 500);
-			var yb = new YellowBrick(50 + (interval*i), 550);
-			var pb = new PurpleBrick(50 + (interval*i), 600);
+			var rb = new RedBrick(50 + interval * i, 400);
+			var bb = new BlueBrick(50 + interval * i, 450);
+			var gb = new GreenBrick(50 + interval * i, 500);
+			var yb = new YellowBrick(50 + interval * i, 550);
+			var pb = new PurpleBrick(50 + interval * i, 600);
 			this.redBrickList.push(rb);
 			this.blueBrickList.push(bb);
 			this.greenBrickList.push(gb);
@@ -341,17 +326,29 @@ class Game {
 		this.numElements = 40;
 	}
 
+	drawLives() {
+		var context = this.canvas.getContext("2d");
+		context.font = "16px Arial";
+		context.fillText('Lives: ' + this.numLives, 100, 20);
+	}
+
+	drawScore() {
+		var context = this.canvas.getContext("2d");
+		context.font = "16px Arial";
+		context.fillText('Score: ' + this.score, 8, 20);
+	}
+
 	begin() {
 		//	Create the bricks, set the ball and paddle
-		this.ball = new Ball(this.xDem/2, 200);
-		this.paddle = new Paddle(this.xDem/2, 100);
+		this.ball = new Ball(this.xDem / 2, 200);
+		this.paddle = new Paddle(this.xDem / 2, 100);
 		var interval = 50;
 		for (var i = 0; i < 8; i++) {
-			var rb = new RedBrick(50 + (interval*i), 400);
-			var bb = new BlueBrick(50 + (interval*i), 450);
-			var gb = new GreenBrick(50 + (interval*i), 500);
-			var yb = new YellowBrick(50 + (interval*i), 550);
-			var pb = new PurpleBrick(50 + (interval*i), 600);
+			var rb = new RedBrick(50 + interval * i, 400);
+			var bb = new BlueBrick(50 + interval * i, 450);
+			var gb = new GreenBrick(50 + interval * i, 500);
+			var yb = new YellowBrick(50 + interval * i, 550);
+			var pb = new PurpleBrick(50 + interval * i, 600);
 			this.redBrickList.push(rb);
 			this.blueBrickList.push(bb);
 			this.greenBrickList.push(gb);
@@ -361,9 +358,9 @@ class Game {
 		var self = this;
 		self.draw();
 		//	Start the timer.
-		this.interval = setInterval(function() {
+		this.interval = setInterval(function () {
 			self.update();
-			self.draw();	
+			self.draw();
 		}, 1000 / this.fps);
 	}
 
@@ -379,11 +376,11 @@ class Game {
 		if (this.score === 20000) {
 			this.newLife();
 		}
-		$('#gameContainer').mouseover(function(e) {
+		$('#gameContainer').mouseover(function (e) {
 			var xMouseVal = e.pageX;
 			this.paddle.move(xMouseVal);
 		});
-		
+
 		this.ball.move();
 		if (this.ball.atTopWall(this.yDem)) {
 			this.ball.flip('v');
@@ -395,25 +392,30 @@ class Game {
 			this.paddle.collision(this.ball);
 		}
 		for (var i = 0; i < 8; i++) {
-			if (!(this.redBrickList[i].showIsHit) && this.redBrickList[i].hasCollided(this.ball)) {
+			if (!this.redBrickList[i].showIsHit && this.redBrickList[i].hasCollided(this.ball)) {
 				this.redBrickList[i].collison(this.ball);
 				this.numElements -= 1;
+				this.score += this.redBrickList[i].showScore();
 			}
-			if (!(this.blueBrickList[i].showIsHit) && this.blueBrickList[i].hasCollided(this.ball)) {
+			if (!this.blueBrickList[i].showIsHit && this.blueBrickList[i].hasCollided(this.ball)) {
 				this.blueBrickList[i].collison(this.ball);
 				this.numElements -= 1;
+				this.score += this.blueBrickList[i].showScore();
 			}
-			if (!(this.greenBrickList[i].showIsHit) && this.greenBrickList[i].hasCollided(this.ball)) {
+			if (!this.greenBrickList[i].showIsHit && this.greenBrickList[i].hasCollided(this.ball)) {
 				this.greenBrickList[i].collison(this.ball);
 				this.numElements -= 1;
+				this.score += this.greenBrickList[i].showScore();
 			}
-			if (!(this.yellowBrickList[i].showIsHit) && this.yellowBrickList[i].hasCollided(this.ball)) {
+			if (!this.yellowBrickList[i].showIsHit && this.yellowBrickList[i].hasCollided(this.ball)) {
 				this.yellowBrickList[i].collison(this.ball);
 				this.numElements -= 1;
+				this.score += this.yellowBrickList[i].showScore();
 			}
-			if (!(this.purpleBrickList[i].showIsHit) && this.purpleBrickList[i].hasCollided(this.ball)) {
+			if (!this.purpleBrickList[i].showIsHit && this.purpleBrickList[i].hasCollided(this.ball)) {
 				this.purpleBrickList[i].collison(this.ball);
 				this.numElements -= 1;
+				this.score += this.purpleBrickList[i].showScore();
 			}
 		}
 	}
@@ -424,31 +426,26 @@ class Game {
 
 		// Clear Stuff and Draw the Background.
 		context.clearRect(0, 0, this.canvas.width, this.canvas.height);
-	 	context.fillStyle = '#e3e3e3';
+		context.fillStyle = '#e3e3e3';
 		context.fillRect(0, 0, this.width, this.height);
 
 		//	Draw  the elements.
 		// Start with the bricks
 		for (var i = 0; i < 8; i++) {
-			if (!(this.redBrickList[i].showIsHit())) {
-				context.drawImage(this.redBrickList[i].image, this.redBrickList[i].showXVal(),
-					this.redBrickList[i].showYVal());
+			if (!this.redBrickList[i].showIsHit()) {
+				context.drawImage(this.redBrickList[i].image, this.redBrickList[i].showXVal(), this.redBrickList[i].showYVal());
 			}
-			if (!(this.blueBrickList[i].showIsHit())) {
-				context.drawImage(this.blueBrickList[i].image, this.blueBrickList[i].showXVal(),
-					this.blueBrickList[i].showYVal());
+			if (!this.blueBrickList[i].showIsHit()) {
+				context.drawImage(this.blueBrickList[i].image, this.blueBrickList[i].showXVal(), this.blueBrickList[i].showYVal());
 			}
-			if (!(this.greenBrickList[i].showIsHit())) {
-				context.drawImage(this.greenBrickList[i].image, this.greenBrickList[i].showXVal(),
-					this.greenBrickList[i].showYVal());
+			if (!this.greenBrickList[i].showIsHit()) {
+				context.drawImage(this.greenBrickList[i].image, this.greenBrickList[i].showXVal(), this.greenBrickList[i].showYVal());
 			}
-			if (!(this.yellowBrickList[i].showIsHit())) {
-				context.drawImage(this.yellowBrickList[i].image, this.yellowBrickList[i].showXVal(),
-					this.yellowBrickList[i].showYVal());
+			if (!this.yellowBrickList[i].showIsHit()) {
+				context.drawImage(this.yellowBrickList[i].image, this.yellowBrickList[i].showXVal(), this.yellowBrickList[i].showYVal());
 			}
-			if (!(this.purpleBrickList[i].showIsHit())) {
-				context.drawImage(this.purpleBrickList[i].image, this.purpleBrickList[i].showXVal(),
-					this.purpleBrickList[i].showYVal());
+			if (!this.purpleBrickList[i].showIsHit()) {
+				context.drawImage(this.purpleBrickList[i].image, this.purpleBrickList[i].showXVal(), this.purpleBrickList[i].showYVal());
 			}
 		}
 
@@ -459,26 +456,25 @@ class Game {
 	}
 }
 
-
 /* Export module:  
  * I'll be using this for my test cases  
- */ 
+ */
 module.exports = {
-	brickClasses: {     
-		mainBrick: Brick,     
-		redBrick: RedBrick,     
-		blueBrick: BlueBrick,     
-		greenBrick: GreenBrick,     
+	brickClasses: {
+		mainBrick: Brick,
+		redBrick: RedBrick,
+		blueBrick: BlueBrick,
+		greenBrick: GreenBrick,
 		yellowBrick: YellowBrick,
-		purpleBrick: PurpleBrick   
-	},   
-	ballClasses: {     
-		ball: Ball   
+		purpleBrick: PurpleBrick
 	},
-	paddleClasses: {     
-		paddle: Paddle   
-	},   
-	gameClasses: {     
+	ballClasses: {
+		ball: Ball
+	},
+	paddleClasses: {
+		paddle: Paddle
+	},
+	gameClasses: {
 		gameClass: Game
-	} 
+	}
 };
